@@ -1,0 +1,15 @@
+{
+  "name": "ledger",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "truffle test/*",
+    "build": "truffle compile all"
+  },
+  "author": "",
+  "license": "ISC"
+}
