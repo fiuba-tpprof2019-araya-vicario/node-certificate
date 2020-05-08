@@ -12,9 +12,7 @@ expressSwagger({
         info: { description: 'Certification Server', title: 'Swagger', version: '1.0.0' },
         host: `localhost:${port}`,
         basePath: '/api',
-        produces: [
-            "application/json",
-        ]
+        produces: [ "application/json" ]
     },
     basedir: __dirname, //app absolute path
     files: ['./routes/**/*.js'] //Path to the API handle folder
