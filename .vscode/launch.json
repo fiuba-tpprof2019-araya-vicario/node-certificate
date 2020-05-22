@@ -8,6 +8,7 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
+            "cwd": "${workspaceFolder}/server",
             "skipFiles": [
                 "<node_internals>/**"
             ],

@@ -3,12 +3,15 @@ pragma experimental ABIEncoderV2;
 
 contract Certificate {
 
+	uint256 public version = 1;
+
 	struct Project {
+		string id;
 		string name;
 		string proposal_url;
 		string proposal_drive_id;
 		string proposal_name;
-		string ownerId;
+		string creatorId;
 		string tutorId;
 		bool exists;
 		bool locked;
@@ -19,6 +22,7 @@ contract Certificate {
 	}
 
 	struct Contributor {
+		string id;
 		string name;
 		string surname;
 		string email;
@@ -28,6 +32,7 @@ contract Certificate {
 	}
 
 	struct Tutor {
+		string id;
 		string name;
 		string surname;
 		string email;
@@ -50,12 +55,12 @@ contract Certificate {
 		auditor = msg.sender;
 	}
 
-	function createContributor(string memory _id, Contributor memory _data) public {
+	function createContributor(Contributor memory _data) public {
 		//check that doesn't exists
 		assert(_data.exists == false);
-		assert(contributors_set[_id].exists == false);
-		contributors_set[_id] = _data;
-		contributors_set[_id].exists = true;
+		assert(contributors_set[_data.id].exists == false);
+		contributors_set[_data.id] = _data;
+		contributors_set[_data.id].exists = true;
 	}
 
 	function getContributor(string memory _id) public view returns(Contributor memory contributor){
@@ -64,12 +69,12 @@ contract Certificate {
 		assert(contributor.exists);
 	}
 
-	function createTutor(string memory _id, Tutor memory _data) public {
+	function createTutor(Tutor memory _data) public {
 		//check that doesn't exists
 		assert(_data.exists == false);
-		assert(tutors_set[_id].exists == false);
-		tutors_set[_id] = _data;
-		tutors_set[_id].exists = true;
+		assert(tutors_set[_data.id].exists == false);
+		tutors_set[_data.id] = _data;
+		tutors_set[_data.id].exists = true;
 	}
 
 	function getTutor(string memory _id) public view returns(Tutor memory tutor){
@@ -78,16 +83,17 @@ contract Certificate {
 		assert(tutor.exists);
 	}
 
-	function createProject(string memory _id, string memory _type_name, Project memory _data) public {
+	function createProject(string memory _type_name, Project memory _data) public {
 		//check that doesn't exists
-		assert(projects_set[_id].exists == false);
+		assert(projects_set[_data.id].exists == false);
 		//check that owner exists
-		assert(contributors_set[_data.ownerId].exists == true);
+		assert(contributors_set[_data.creatorId].exists == true);
 		//check that tutor exists
 		assert(tutors_set[_data.tutorId].exists == true);
-		projects_set[_id] = _data;
-		project_type_set[_id] = Type(_type_name);
-		projects_set[_id].exists = true;
+
+		projects_set[_data.id] = _data;
+		project_type_set[_data.id] = Type(_type_name);
+		projects_set[_data.id].exists = true;
 	}
 
 	function addProjectContributor(string memory _project_id, string memory _contributor_id) public {
@@ -110,7 +116,7 @@ contract Certificate {
 
 	function getProject(string memory _id) public view returns(Project memory project,
 															   Type memory oftype,
-														       Contributor memory owner,
+														       Contributor memory creator,
 															   Tutor memory tutor,
 															   string[] memory contributors,
 															   string[] memory cotutors){
@@ -118,7 +124,7 @@ contract Certificate {
 		project = projects_set[_id];
 		assert(project.exists);
 		oftype = project_type_set[_id];
-		owner = contributors_set[project.ownerId];
+		creator = contributors_set[project.creatorId];
 		tutor = tutors_set[project.tutorId];
 		contributors = project_contributors_set[_id];
 		cotutors = project_cotutors_set[_id];

@@ -11,5 +11,8 @@
     "build": "truffle compile all"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "truffle-hdwallet-provider": "^1.0.17"
+  }
 }

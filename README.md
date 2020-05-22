@@ -13,6 +13,10 @@ npm run test
 
 npm run build
 
+* deploy contract
+
+truffle migrate --reset --network ropsten
+
 ** server
 
 * run 

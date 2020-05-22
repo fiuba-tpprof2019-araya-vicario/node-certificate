@@ -20,6 +20,8 @@ expressSwagger({
 
 app.use(bodyParser.json());
 
+app.use('/api/contributors', require('./routes/contributors'));
+app.use('/api/tutors', require('./routes/tutors'));
 app.use('/api/certifications', require('./routes/certifications'));
 
 app.listen(port, function () {
