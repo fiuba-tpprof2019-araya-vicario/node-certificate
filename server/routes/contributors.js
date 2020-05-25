@@ -1,37 +1,28 @@
 const express = require('express');
-const uuid = require('uuid');
 const ledger = require('../ledger');
-const router = express.Router();
+const Contributor = require('../models/contributor');
+const CreateContributor = require('../models/create-contributor');
 
-/**
- * @typedef Contributor
- * @property {[string]} id
- * @property {[string]} name.required
- * @property {[string]} surname.required
- * @property {[string]} email.required
- * @property {[string]} padron.required 
- * @property {Array.<string>} careers.required 
- */
+const router = express.Router();
 
 /**
  * @route GET /contributors/{id}
  * @param {string} id.path.required
  * @returns {Contributor.model} 200
  */
-router.get('/:id', (req, res)=> {
-    ledger.getContributor(req.params.id)
-          .then(data=>  res.status(200).send(data))
-          .catch(err=> res.status(404).send(err));
-});
+router.get('/:id', async (req, res)=> {
 
- /**
- * @typedef CreateContributor
- * @property {[string]} name.required
- * @property {[string]} surname.required
- * @property {[string]} email.required
- * @property {[string]} padron.required 
- * @property {Array.<string>} careers.required 
- */
+    try {
+        const contributor = await ledger.getContributor(req.params.id);
+
+        const model = new Contributor(contributor);
+
+        res.status(200).send(model)
+    }
+    catch(err) {
+        res.status(404).send(err);
+    }
+});
 
 /**
  * @route POST /contributors
@@ -41,15 +32,17 @@ router.get('/:id', (req, res)=> {
 router.post('/', async (req, res)=> {
 
     try {
-        req.body.id = uuid.v4();
+        const request = new CreateContributor(req.body);
         
-        const tx = await ledger.createContributor(req.body);
+        const tx = await ledger.createContributor(request);
 
         await tx.wait();
 
-        const contributor = await ledger.getContributor(req.body.id);
+        const contributor = await ledger.getContributor(request.id);
 
-        res.status(201).send(contributor);
+        const model = new Contributor(contributor);
+
+        res.status(201).send(model);
     }
     catch(err){
         res.status(500).send(err);

@@ -15,14 +15,14 @@ expressSwagger({
         produces: [ "application/json" ]
     },
     basedir: __dirname, //app absolute path
-    files: ['./routes/**/*.js'] //Path to the API handle folder
+    files: ['./routes/**/*.js', './models/**/*.js'] //Path to the API handle folder
 })
 
 app.use(bodyParser.json());
 
 app.use('/api/contributors', require('./routes/contributors'));
 app.use('/api/tutors', require('./routes/tutors'));
-app.use('/api/certifications', require('./routes/certifications'));
+app.use('/api/projects', require('./routes/projects'));
 
 app.listen(port, function () {
     console.log(`app listening on port ${port}!`);

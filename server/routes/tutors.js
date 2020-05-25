@@ -1,33 +1,28 @@
 const express = require('express');
-const uuid = require('uuid');
 const ledger = require('../ledger');
-const router = express.Router();
+const Tutor = require('../models/tutor');
+const CreateTutor = require('../models/create-tutor');
 
-/**
- * @typedef Tutor
- * @property {[string]} id
- * @property {[string]} name.required
- * @property {[string]} surname.required
- * @property {[string]} email.required
- */
+const router = express.Router();
 
 /**
  * @route GET /tutors/{id}
  * @param {string} id.path.required
  * @returns {Tutor.model} 200
  */
-router.get('/:id', (req, res)=> {
-    ledger.getTutor(req.params.id)
-          .then(data=>  res.status(200).send(data))
-          .catch(err=> res.status(404).send(err));
-});
+router.get('/:id', async (req, res)=> {
 
-/**
- * @typedef CreateTutor
- * @property {[string]} name.required
- * @property {[string]} surname.required
- * @property {[string]} email.required
- */
+    try {
+        const tutor = await ledger.getTutor(req.params.id);
+
+        const model = new Tutor(tutor);
+
+        res.status(200).send(model)
+    }
+    catch(err) {
+        res.status(404).send(err);
+    }
+});
 
 /**
  * @route POST /tutors
@@ -37,15 +32,17 @@ router.get('/:id', (req, res)=> {
 router.post('/', async (req, res)=> {
 
     try {
-        req.body.id = uuid.v4();
+        const request = new CreateTutor(req.body);
         
-        const tx = await ledger.createTutor(req.body);
+        const tx = await ledger.createTutor(request);
 
         await tx.wait();
 
-        const tutor = await ledger.getTutor(req.body.id);
+        const tutor = await ledger.getTutor(request.id);
 
-        res.status(201).send(tutor);
+        const model = new Tutor(tutor);
+
+        res.status(201).send(model);
     }
     catch(err){
         res.status(500).send(err);
