@@ -10,7 +10,7 @@ const expressSwagger = require('express-swagger-generator')(app);
 expressSwagger({
     swaggerDefinition: {
         info: { description: 'Certification Server', title: 'Swagger', version: '1.0.0' },
-        host: `localhost:${port}`,
+        host: process.env.HOST || `localhost:${port}`,
         basePath: '/api',
         produces: [ "application/json" ]
     },
