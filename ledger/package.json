@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "truffle test/*",
-    "build": "truffle compile all"
+    "build": "truffle compile all && cp build/contracts/* ../server/contracts"
   },
   "author": "",
   "license": "ISC",

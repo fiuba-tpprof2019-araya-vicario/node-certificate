@@ -30,7 +30,8 @@ module.exports = {
       provider: () => new HDWalletProvider(process.env.MNENOMIC, "https://ropsten.infura.io/v3/" + process.env.INFURA_API_KEY),
       network_id: 3,
       gas: 8000029,
-      gasPrice: 10000000000
+      gasPrice: 10000000000,
+      timeoutBlocks: 4000
     },
     kovan: {
       provider: () => new HDWalletProvider(process.env.MNENOMIC, "https://kovan.infura.io/v3/" + process.env.INFURA_API_KEY),

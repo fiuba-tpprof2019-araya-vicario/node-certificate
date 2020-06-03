@@ -4,7 +4,7 @@ const ethers = require('ethers');
 require('dotenv').config();
 
 const privateKey = new Buffer(process.env.PRIVATE_KEY, 'hex');
-const filePath = path.join(__dirname,'../ledger/build/contracts/Certificate.json');
+const filePath = path.join(__dirname,'contracts/Certificate.json');
 const build = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 const abi = build.abi;
 const provider = new ethers.providers.InfuraProvider(process.env.NETWORK_NAME,process.env.INFURA_API_KEY);
