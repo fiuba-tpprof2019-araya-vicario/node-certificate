@@ -15,9 +15,7 @@
     "ethers": "^4.0.47",
     "express": "^4.17.1",
     "uuid": "^8.1.0",
-    "web3": "^1.2.7"
-  },
-  "devDependencies": {
+    "web3": "^1.2.7",
     "express-swagger-generator": "^1.1.17"
   }
 }

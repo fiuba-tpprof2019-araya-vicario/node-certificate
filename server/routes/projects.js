@@ -33,32 +33,31 @@ router.get('/:id', async (req, res)=> {
  * @property {ProjectProperties.model} project.required
  * @property {Type.model} oftype.required 
  * @property {CreateContributor.model} creator.required 
- * @property {Array.<CreateContributor>} contributors.required 
+ * @property {Array.<CreateContributor>} students.required 
  * @property {CreateTutor.model} tutor.required 
  * @property {Array.<CreateTutor>} cotutors.required 
  */
 
 /**
- * @route POST /projects
+ * @route POST /projects/seed
  * @param {SeedProject.model} project.body.required
  * @returns {Project.model} 200
  */
-router.post('/', async (req, res)=> {
+router.post('/seed', async (req, res)=> {
 
     try {
         req.body.project.id = uuid.v4();
         req.body.creator.id = uuid.v4();
         req.body.tutor.id = uuid.v4();
-        req.body.contributors = req.body.contributors || [];
-        req.body.contributors.forEach(c=> c.id = uuid.v4());
+        req.body.students = req.body.students || [];
+        req.body.students.forEach(c=> c.id = uuid.v4());
         req.body.cotutors = req.body.cotutors || [];
         req.body.cotutors.forEach(c=> c.id = uuid.v4());
 
-        const typeName = req.body.oftype.name;
         const createCreator = new CreateContributor(req.body.creator);
         const createTutor = new CreateTutor(req.body.tutor);
         const createProject = new CreateProject(req.body.project, createCreator.id, createTutor.id);
-        const createContributors = req.body.contributors.map(x=> new CreateContributor(x));
+        const createStudents = req.body.students.map(x=> new CreateContributor(x));
         const createCotutors = req.body.cotutors.map(x=> new CreateTutor(x));
         
         //async returns control 
@@ -71,24 +70,20 @@ router.post('/', async (req, res)=> {
                 const tutorTx = await ledger.createTutor(createTutor);
                 await tutorTx.wait();
 
-                const projectTx = await ledger.createProject(typeName, createProject);
-                await projectTx.wait();
-
-                for(let createContributor of createContributors){
-                    const contributorTx = await ledger.createContributor(createContributor);
-                    await contributorTx.wait();
-
-                    const linkTx = await ledger.addProjectContributor(createProject.id, createContributor.id, { gasLimit: 8000000 });
-                    await linkTx.wait();
+                for(let createStudent of createStudents){
+                    const studentTx = await ledger.createContributor(createStudent);
+                    createProject.studentIds.push(createStudent.id);
+                    await studentTx.wait();
                 }
 
                 for(let createCotutor of createCotutors){
                     const tutorTx = await ledger.createTutor(createCotutor);
+                    createProject.cotutorIds.push(createCotutor.id);
                     await tutorTx.wait();
-
-                    const linkTx = await ledger.addProjectTutor(createProject.id, createCotutor.id, { gasLimit: 8000000 });
-                    await linkTx.wait();
                 }
+
+                const projectTx = await ledger.createProject(createProject);
+                await projectTx.wait();
             }
             catch(err) {
                 console.error(err);
@@ -104,17 +99,16 @@ router.post('/', async (req, res)=> {
 });
 
 /**
- * @route POST /projects/{oftype}
- * @param {[string]} oftype.path.required
+ * @route POST /projects
  * @param {CreateProject.model} project.body.required
  * @returns {Project.model} 200
  */
-router.post('/:oftype', async (req, res)=> {
+router.post('/', async (req, res)=> {
 
     try {
         const request = new CreateProject(req.body);
 
-        const tx = await ledger.createProject(req.params.oftype, request);
+        const tx = await ledger.createProject(request);
 
         await tx.wait();
 
@@ -130,22 +124,22 @@ router.post('/:oftype', async (req, res)=> {
 });
 
 /**
- * @typedef AddContributor
+ * @typedef AddStudent
  * @property {[string]} id.required
  */
 
 /**
- * @route POST /projects/{id}/contributors
+ * @route POST /projects/{id}/students
  * @param {[string]} id.path.required
- * @param {AddContributor.model} reference.body.required
+ * @param {AddStudent.model} reference.body.required
  * @returns {Project.model} 200
  */
-router.post('/:id/contributors', async (req, res)=> {
+router.post('/:id/students', async (req, res)=> {
 
     try {
         req.body.id = uuid.v4();
         
-        const tx = await ledger.addProjectContributor(req.params.id, req.body.id, { gasLimit: 8000000 });
+        const tx = await ledger.addProjectStudent(req.params.id, req.body.id, { gasLimit: 8000000 });
 
         await tx.wait();
 
@@ -174,7 +168,7 @@ router.post('/:id/cotutors', async (req, res)=> {
     try {
         req.body.id = uuid.v4();
         
-        const tx = await ledger.addProjectTutor(req.params.id, req.body.id, { gasLimit: 8000000 });
+        const tx = await ledger.addProjectTutor(req.params.id, req.body.id);
 
         await tx.wait();
 

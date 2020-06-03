@@ -21,3 +21,8 @@ truffle migrate --reset --network ropsten
 
 * run 
 npm start
+
+
+* swagger 
+  
+** http://localhost:3000/api-docs

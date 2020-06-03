@@ -38,9 +38,9 @@ contract('Certificate', (accounts) => {
     const certificateInstance = await Certificate.deployed();
     const type_name = 'sample-type';
      
-    const data = { id: projectId, creatorId: creatorId , tutorId: tutorId, name: 'nombre', proposal_url:'http://p.txt', proposal_drive_id: 'drive id', proposal_name: 'proposal name'};
+    const data = { id: projectId, typeId: type_name, creatorId: creatorId , tutorId: tutorId, studentIds: [], cotutorIds: [] , name: 'nombre', proposal_url:'http://p.txt', proposal_drive_id: 'drive id', proposal_name: 'proposal name'};
 
-    await certificateInstance.createProject(type_name, data);
+    await certificateInstance.createProject(data);
 
     const result = await certificateInstance.getProject(projectId);
 
@@ -48,25 +48,26 @@ contract('Certificate', (accounts) => {
 
     assert.equal(saved.oftype.name, type_name, "type doesn't match");
 
-    assert.equal(saved.project.creatorId, data.creatorId, "creatorId doesn't match");
-    assert.equal(saved.project.tutorId, data.tutorId, "creatorId doesn't match");
-    assert.equal(saved.project.name, data.name, "name doesn't match");
-    assert.equal(saved.project.proposal_url, data.proposal_url, "proposal_url doesn't match");
-    assert.equal(saved.project.proposal_drive_id, data.proposal_drive_id, "proposal_drive_id doesn't match");
-    assert.equal(saved.project.proposal_name, data.proposal_name, "proposal_name doesn't match");
+    assert.equal(saved.properties.typeId, data.typeId, "typeId doesn't match");
+    assert.equal(saved.properties.creatorId, data.creatorId, "creatorId doesn't match");
+    assert.equal(saved.properties.tutorId, data.tutorId, "creatorId doesn't match");
+    assert.equal(saved.properties.name, data.name, "name doesn't match");
+    assert.equal(saved.properties.proposal_url, data.proposal_url, "proposal_url doesn't match");
+    assert.equal(saved.properties.proposal_drive_id, data.proposal_drive_id, "proposal_drive_id doesn't match");
+    assert.equal(saved.properties.proposal_name, data.proposal_name, "proposal_name doesn't match");
     
   });
 
-  it('should add contributor', async () => {
+  it('should add student', async () => {
     const certificateInstance = await Certificate.deployed();
     const contributorId = 'contrib-2';
     await certificateInstance.createContributor({ id: contributorId, name: 'gordon', surname: 'shumway', email: 'alf@yopmail.com', padron: '53564564', careers:['ufologia'] });
-    await certificateInstance.addProjectContributor(projectId, contributorId);
+    await certificateInstance.addProjectStudent(projectId, contributorId);
     
     const result = await certificateInstance.getProject(projectId);
     const saved = result.valueOf();
 
-    assert.equal(saved.contributors[0], contributorId, "contributorId doesn't match");
+    assert.equal(saved.properties.studentIds[0], contributorId, "contributorId doesn't match");
   });
 
   it('should add cotutor', async () => {
@@ -78,7 +79,7 @@ contract('Certificate', (accounts) => {
     const result = await certificateInstance.getProject(projectId);
     const saved = result.valueOf();
 
-    assert.equal(saved.cotutors[0], tutorId, "tutorId doesn't match");
+    assert.equal(saved.properties.cotutorIds[0], tutorId, "tutorId doesn't match");
   });
 
 });
