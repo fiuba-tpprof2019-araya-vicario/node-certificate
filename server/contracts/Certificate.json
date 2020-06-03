@@ -12947,12 +12947,13 @@
     "3": {
       "events": {},
       "links": {},
-      "address": "0x895E373d9216a941e1518bb38FC6A3034f8Ad883",
-      "transactionHash": "0xe3350bf4b9415a66ab65e797cec4b7a063b58fa65eabeba9fb26402654153cc9"
+      "address": "0x824843d474efd342dfFeb71d080c8FBb97C47534",
+      "transactionHash": "0xb1f793f4caf70f2b0a676fa25b5ad34d1433db9339fe84ba13b9b4b6d97df84c"
     }
   },
   "schemaVersion": "3.1.0",
-  "updatedAt": "2020-06-03T15:14:26.766Z",
+  "updatedAt": "2020-06-03T16:34:28.644Z",
+  "networkType": "ethereum",
   "devdoc": {
     "methods": {}
   },
