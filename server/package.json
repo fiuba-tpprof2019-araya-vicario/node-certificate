@@ -15,6 +15,7 @@
     "ethers": "^5.0.8",
     "express": "^4.17.1",
     "express-swagger-generator": "^1.1.17",
+    "request-promise": "^4.2.6",
     "uuid": "^8.1.0",
     "web3": "^1.2.7"
   }

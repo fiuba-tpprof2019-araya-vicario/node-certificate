@@ -9,6 +9,13 @@ const CreateTutor = require('../models/create-tutor');
 const router = express.Router();
 
 
+
+import rp from 'request-promise'
+
+
+
+
+
 /**
  * @route GET /projects/{id}
  * @param {string} id.path.required
@@ -114,6 +121,20 @@ router.post('/seed', async (req, res)=> {
                 console.log("tx final",tx)
 
                 console.log("tx final hash",tx.hash)
+
+
+                
+                let rp_blockchain = {
+                    uri: 'https://brain-search-api.herokuapp.com/v0/api/projects/blockchain',
+                    method: 'POST',
+                    json: true, // Automatically parses the JSON string in the response
+                    body: {
+                        tx_id: {tx.hash}    
+                    }
+                }
+
+                let apiBlockchainResponse = await rp(rp_blockchain)
+
 
 
             }
