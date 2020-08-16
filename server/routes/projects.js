@@ -53,7 +53,7 @@ router.get('/:id', async (req, res)=> {
 router.post('/seed', async (req, res)=> {
 
     try {
-        let originalProjectId= req.body.project.id;
+        let originalProjectId= req.body.project_id;
         req.body.project.id = uuid.v4();
         req.body.creator.id = uuid.v4();
         req.body.tutor.id = uuid.v4();
