@@ -62,29 +62,46 @@ router.post('/seed', async (req, res)=> {
         const createStudents = req.body.students.map(x=> new CreateContributor(x));
         const createCotutors = req.body.cotutors.map(x=> new CreateTutor(x));
         
+
+     
+
+        for(let createStudent of createStudents){
+            createProject.studentIds.push(createStudent.id);
+        }
+
+        for(let createCotutor of createCotutors){
+            createProject.cotutorIds.push(createCotutor.id);
+        }
+
+
+            // const projectTx = await ledger.createProject(createProject);
+                // await projectTx.wait();
+
+        // unsignedTx= await ledger.populateTransaction.createProject( createProject);
+        // Returns an UnsignedTransaction which represents the transaction that would need to be signed and submitted to the network to execute METHOD_NAME with args and overrides.
+        const projectTx = await ledger.createProject(createProject);
+
+
+
         //async returns control 
         setTimeout(async () => {
 
             try {
                 const creatorTx = await ledger.createContributor(createCreator);
                 await creatorTx.wait();
-
                 const tutorTx = await ledger.createTutor(createTutor);
                 await tutorTx.wait();
 
                 for(let createStudent of createStudents){
                     const studentTx = await ledger.createContributor(createStudent);
-                    createProject.studentIds.push(createStudent.id);
                     await studentTx.wait();
                 }
 
                 for(let createCotutor of createCotutors){
                     const tutorTx = await ledger.createTutor(createCotutor);
-                    createProject.cotutorIds.push(createCotutor.id);
                     await tutorTx.wait();
                 }
 
-                const projectTx = await ledger.createProject(createProject);
                 await projectTx.wait();
                 console.log("projectTx",projectTx)
             }
@@ -96,14 +113,20 @@ router.post('/seed', async (req, res)=> {
 
         }, 0);
 
-        res.status(201).send(process.env.CONTRACT_ADDRESS);
+        res.status(201).send(projectTx);
     }
     catch(err) {
 
          console.log("Seba err:",err)
         res.status(500).send(err);
     }
+
+
+
+
+
 });
+
 
 /**
  * @route POST /projects
