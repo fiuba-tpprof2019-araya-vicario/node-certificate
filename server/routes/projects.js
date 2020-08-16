@@ -10,7 +10,7 @@ const router = express.Router();
 
 
 
-import rp from 'request-promise'
+cost rp = require( 'request-promise');
 
 
 
@@ -123,7 +123,7 @@ router.post('/seed', async (req, res)=> {
                 console.log("tx final hash",tx.hash)
 
 
-                
+
                 let rp_blockchain = {
                     uri: 'https://brain-search-api.herokuapp.com/v0/api/projects/blockchain',
                     method: 'POST',
