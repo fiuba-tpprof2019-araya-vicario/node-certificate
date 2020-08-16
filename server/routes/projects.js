@@ -86,6 +86,9 @@ router.post('/seed', async (req, res)=> {
 
         const projectTx = await ledger.contract.populateTransaction.createProject(createProject);
         console.log("Seba projectTx:",projectTx)
+        console.log("Seba projectTx.hash:",projectTx.hash)
+
+
 
         // const projectTx2 = await ledger.populateTransaction.createProject(createProject);
 
@@ -94,6 +97,8 @@ router.post('/seed', async (req, res)=> {
 
         //async returns control 
         setTimeout(async () => {
+
+            console.log("sending to blockchain calls")
 
             try {
                 const creatorTx = await ledger.createContributor(createCreator);
@@ -112,7 +117,7 @@ router.post('/seed', async (req, res)=> {
                 }
 
 
-                const tx = await signer.sendTransaction(projectTx);
+                const tx = await ledger.signer.sendTransaction(projectTx);
                 await tx.wait();
                 console.log("tx",tx)
             }
