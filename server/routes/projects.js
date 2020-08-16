@@ -78,6 +78,11 @@ router.post('/seed', async (req, res)=> {
 
         console.log("Seba ledger:",ledger)
 
+        console.log("Seba ledger contract:",ledger.contract)
+
+
+        console.log("Seba ledger() contract:",ledger().contract)
+
 
         const projectTx = await ledger.contract.populateTransaction.createProject(createProject);
         console.log("Seba projectTx:",projectTx)
