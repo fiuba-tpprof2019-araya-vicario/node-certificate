@@ -10,7 +10,7 @@ const router = express.Router();
 
 
 
-cost rp = require( 'request-promise');
+const rp = require( 'request-promise');
 
 
 
