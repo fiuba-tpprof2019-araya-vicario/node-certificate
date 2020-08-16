@@ -54,6 +54,8 @@ router.post('/seed', async (req, res)=> {
         req.body.cotutors = req.body.cotutors || [];
         req.body.cotutors.forEach(c=> c.id = uuid.v4());
 
+         console.log("Seba Body:",req.body.project)
+
         const createCreator = new CreateContributor(req.body.creator);
         const createTutor = new CreateTutor(req.body.tutor);
         const createProject = new CreateProject(req.body.project, createCreator.id, createTutor.id);
@@ -83,9 +85,12 @@ router.post('/seed', async (req, res)=> {
                 }
 
                 const projectTx = await ledger.createProject(createProject);
+                 console.log("projectTx:",projectTx)
                 await projectTx.wait();
             }
             catch(err) {
+
+                console.log("Seba Error:",req.body.project)
                 console.error(err);
             }
 
@@ -95,6 +100,8 @@ router.post('/seed', async (req, res)=> {
         res.status(201).send(projectTx);
     }
     catch(err) {
+        
+         console.log("Seba err:",err)
         res.status(500).send(err);
     }
 });
