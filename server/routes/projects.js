@@ -53,13 +53,13 @@ router.get('/:id', async (req, res)=> {
 router.post('/seed', async (req, res)=> {
 
     try {
-        // req.body.project.id = uuid.v4();
-        // req.body.creator.id = uuid.v4();
-        // req.body.tutor.id = uuid.v4();
-        // req.body.students = req.body.students || [];
-        // req.body.students.forEach(c=> c.id = uuid.v4());
-        // req.body.cotutors = req.body.cotutors || [];
-        // req.body.cotutors.forEach(c=> c.id = uuid.v4());
+        req.body.project.id = uuid.v4();
+        req.body.creator.id = uuid.v4();
+        req.body.tutor.id = uuid.v4();
+        req.body.students = req.body.students || [];
+        req.body.students.forEach(c=> c.id = uuid.v4());
+        req.body.cotutors = req.body.cotutors || [];
+        req.body.cotutors.forEach(c=> c.id = uuid.v4());
 
         // console.log("Seba Body:",req.body.project)
 
