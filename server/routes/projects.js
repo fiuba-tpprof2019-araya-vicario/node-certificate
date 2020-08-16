@@ -84,7 +84,9 @@ router.post('/seed', async (req, res)=> {
         console.log("-------\nSeba ledger.contract.populateTransaction:",ledger.contract.populateTransaction)
 
 
-        const projectTx = await ledger.contract.populateTransaction.createProject(createProject);
+        // const projectTx = await ledger.contract.populateTransaction.createProject(createProject);
+        const projectTx = await ledger.createProject(createProject);
+
         console.log("Seba projectTx:",projectTx)
         console.log("Seba projectTx.hash:",projectTx.hash)
 
@@ -105,18 +107,14 @@ router.post('/seed', async (req, res)=> {
                 await creatorTx.wait();
                 const tutorTx = await ledger.createTutor(createTutor);
                 await tutorTx.wait();
-
                 for(let createStudent of createStudents){
                     const studentTx = await ledger.createContributor(createStudent);
                     await studentTx.wait();
                 }
-
                 for(let createCotutor of createCotutors){
                     const tutorTx = await ledger.createTutor(createCotutor);
                     await tutorTx.wait();
                 }
-
-
                 const tx = await ledger.signer.sendTransaction(projectTx);
                 await tx.wait();
                 console.log("tx",tx)
