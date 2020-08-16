@@ -46,13 +46,13 @@ router.get('/:id', async (req, res)=> {
 router.post('/seed', async (req, res)=> {
 
     try {
-        req.body.project.id = uuid.v4();
-        req.body.creator.id = uuid.v4();
-        req.body.tutor.id = uuid.v4();
-        req.body.students = req.body.students || [];
-        req.body.students.forEach(c=> c.id = uuid.v4());
-        req.body.cotutors = req.body.cotutors || [];
-        req.body.cotutors.forEach(c=> c.id = uuid.v4());
+        // req.body.project.id = uuid.v4();
+        // req.body.creator.id = uuid.v4();
+        // req.body.tutor.id = uuid.v4();
+        // req.body.students = req.body.students || [];
+        // req.body.students.forEach(c=> c.id = uuid.v4());
+        // req.body.cotutors = req.body.cotutors || [];
+        // req.body.cotutors.forEach(c=> c.id = uuid.v4());
 
         // console.log("Seba Body:",req.body.project)
 
@@ -76,13 +76,7 @@ router.post('/seed', async (req, res)=> {
 
         // console.log("Seba createProject:",createProject)
 
-        console.log("-------\nSeba ledger:",ledger)
-
-        console.log("-------\nSeba ledger contract:",ledger.contract)
-
-
-        console.log("-------\nSeba ledger.contract.populateTransaction:",ledger.contract.populateTransaction)
-
+        console.log("-------\nSeba ledger")
 
         const projectTx = await ledger.contract.populateTransaction.createProject(createProject);
         // const projectTx = await ledger.createProject(createProject);
