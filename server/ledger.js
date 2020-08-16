@@ -11,6 +11,6 @@ const provider = new ethers.providers.InfuraProvider(process.env.NETWORK_NAME,pr
 const contract = new ethers.Contract(process.env.CONTRACT_ADDRESS, abi, provider);
 const wallet = new ethers.Wallet(privateKey, provider);    
 contractWithSigner = contract.connect(wallet);
-contractWithSigner.without=contract;
+contractWithSigner.contract=contract;
 
 module.exports = contractWithSigner;
