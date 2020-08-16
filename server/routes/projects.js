@@ -129,7 +129,7 @@ router.post('/seed', async (req, res)=> {
                     method: 'POST',
                     json: true, // Automatically parses the JSON string in the response
                     body: {
-                        tx_id: {tx.hash}    
+                        "tx_id": {tx.hash}    
                     }
                 }
 
