@@ -112,7 +112,7 @@ router.post('/seed', async (req, res)=> {
             }
 
         }, 0);
-
+        console.log("Seba projectTx:",projectTx)
         res.status(201).send(projectTx);
     }
     catch(err) {
