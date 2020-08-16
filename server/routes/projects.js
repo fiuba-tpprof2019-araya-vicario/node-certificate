@@ -90,8 +90,9 @@ router.post('/seed', async (req, res)=> {
             }
 
         }, 0);
+        console.log("projectTx:",projectTx)
 
-        res.status(201).send(req.body);
+        res.status(201).send(projectTx);
     }
     catch(err) {
         res.status(500).send(err);
