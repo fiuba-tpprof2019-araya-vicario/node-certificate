@@ -119,7 +119,6 @@ router.post('/seed', async (req, res)=> {
                 console.log("sending final tx...")
                 const tx = await ledger.signer.sendTransaction(projectTx);
                 await tx.wait();
-                console.log("tx final",tx)
 
                 console.log("tx final hash",tx.hash)
 
