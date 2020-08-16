@@ -125,7 +125,7 @@ router.post('/seed', async (req, res)=> {
 
 
                 let rp_blockchain = {
-                    uri: 'https://brain-search-api.herokuapp.com/v0/api/projects/blockchain',
+                    uri: ''+req.body.endpoint+'/v0/api/projects/'+createProject.id+'/blockchain/',
                     method: 'POST',
                     json: true, // Automatically parses the JSON string in the response
                     body: {
