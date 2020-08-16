@@ -75,7 +75,7 @@ router.post('/seed', async (req, res)=> {
 
 
         console.log("Seba createProject:",createProject)
-        const projectTx = await ledger.createProject(createProject);
+        const projectTx = await ledger.populateTransaction.createProject(createProject);
 
         console.log("Seba projectTx:",projectTx)
         res.status(201).send(projectTx);
@@ -99,8 +99,10 @@ router.post('/seed', async (req, res)=> {
                     await tutorTx.wait();
                 }
 
-                await projectTx.wait();
-                console.log("projectTx",projectTx)
+
+                const tx = await signer.sendTransaction(projectTx);
+                await tx.wait();
+                console.log("tx",tx)
             }
             catch(err) {
 
