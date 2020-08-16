@@ -53,7 +53,8 @@ router.get('/:id', async (req, res)=> {
 router.post('/seed', async (req, res)=> {
 
     try {
-        // req.body.project.id = uuid.v4();
+        let originalProjectId= req.body.project.id;
+        req.body.project.id = uuid.v4();
         req.body.creator.id = uuid.v4();
         req.body.tutor.id = uuid.v4();
         req.body.students = req.body.students || [];
@@ -85,7 +86,7 @@ router.post('/seed', async (req, res)=> {
 
         console.log("-------\nSeba ledger")
 
-        const projectTx = await ledger.contract.populateTransaction.createProject(createProject);
+        // const projectTx = await ledger.contract.populateTransaction.createProject(createProject);
         // const projectTx = await ledger.createProject(createProject);
 
         // console.log("Seba projectTx:",projectTx)
@@ -117,27 +118,26 @@ router.post('/seed', async (req, res)=> {
                     await tutorTx.wait();
                 }
                 console.log("sending final tx...")
-                const tx = await ledger.signer.sendTransaction(projectTx);
-                await tx.wait();
+                // const tx = await ledger.signer.sendTransaction(projectTx);
+                const projectTx = await ledger.createProject(createProject);
+                await projectTx.wait();
 
-                console.log("tx final hash",tx.hash)
-
+                console.log("tx final hash",projectTx.hash)
 
 
                 let rp_blockchain = {
-                    uri: ''+req.body.endpoint+'/v0/api/projects/'+createProject.id+'/blockchain/',
+                    uri: ''+req.body.endpoint+'/v0/api/projects/'+originalProjectId+'/blockchain/',
                     method: 'POST',
                     json: true, // Automatically parses the JSON string in the response
                     body: {
-                        "tx_id": tx.hash    
+                        "tx_id": projectTx.hash    
                     }
                 }
 
                 let apiBlockchainResponse = await rp(rp_blockchain)
 
 
-
-                console.log("callback completed")
+                console.log("sent to brainsearch completed")
 
             }
             catch(err) {
