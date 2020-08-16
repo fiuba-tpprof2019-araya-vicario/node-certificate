@@ -53,7 +53,7 @@ router.get('/:id', async (req, res)=> {
 router.post('/seed', async (req, res)=> {
 
     try {
-        req.body.project.id = uuid.v4();
+        // req.body.project.id = uuid.v4();
         req.body.creator.id = uuid.v4();
         req.body.tutor.id = uuid.v4();
         req.body.students = req.body.students || [];
