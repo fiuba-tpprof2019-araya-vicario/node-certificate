@@ -84,18 +84,18 @@ router.post('/seed', async (req, res)=> {
         console.log("-------\nSeba ledger.contract.populateTransaction:",ledger.contract.populateTransaction)
 
 
-        // const projectTx = await ledger.contract.populateTransaction.createProject(createProject);
-        const projectTx = await ledger.createProject(createProject);
+        const projectTx = await ledger.contract.populateTransaction.createProject(createProject);
+        // const projectTx = await ledger.createProject(createProject);
 
-        console.log("Seba projectTx:",projectTx)
-        console.log("Seba projectTx.hash:",projectTx.hash)
+        // console.log("Seba projectTx:",projectTx)
+        // console.log("Seba projectTx.hash:",projectTx.hash)
 
 
 
         // const projectTx2 = await ledger.populateTransaction.createProject(createProject);
 
 
-        res.status(201).send(projectTx);
+        res.status(201).send();
 
         //async returns control 
         setTimeout(async () => {
@@ -117,7 +117,11 @@ router.post('/seed', async (req, res)=> {
                 }
                 const tx = await ledger.signer.sendTransaction(projectTx);
                 await tx.wait();
-                console.log("tx",tx)
+                console.log("tx final",tx)
+
+                console.log("tx final hash",tx.hash)
+
+
             }
             catch(err) {
 
