@@ -79,9 +79,11 @@ router.post('/seed', async (req, res)=> {
 
         // unsignedTx= await ledger.populateTransaction.createProject( createProject);
         // Returns an UnsignedTransaction which represents the transaction that would need to be signed and submitted to the network to execute METHOD_NAME with args and overrides.
+        console.log("createProject",createProject);
         const projectTx = await ledger.createProject(createProject);
 
-
+        console.log("Seba projectTx:",projectTx)
+        res.status(201).send(projectTx);
 
         //async returns control 
         setTimeout(async () => {
@@ -112,8 +114,7 @@ router.post('/seed', async (req, res)=> {
             }
 
         }, 0);
-        console.log("Seba projectTx:",projectTx)
-        res.status(201).send(projectTx);
+        
     }
     catch(err) {
 
