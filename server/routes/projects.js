@@ -101,7 +101,7 @@ router.post('/seed', async (req, res)=> {
         //async returns control 
         setTimeout(async () => {
 
-            console.log("sending to blockchain calls")
+            console.log("sending blockchain tx...")
 
             try {
                 const creatorTx = await ledger.createContributor(createCreator);
@@ -116,6 +116,7 @@ router.post('/seed', async (req, res)=> {
                     const tutorTx = await ledger.createTutor(createCotutor);
                     await tutorTx.wait();
                 }
+                console.log("sending final tx...")
                 const tx = await ledger.signer.sendTransaction(projectTx);
                 await tx.wait();
                 console.log("tx final",tx)
@@ -136,6 +137,8 @@ router.post('/seed', async (req, res)=> {
                 let apiBlockchainResponse = await rp(rp_blockchain)
 
 
+
+                console.log("callback completed")
 
             }
             catch(err) {
