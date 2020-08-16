@@ -54,7 +54,7 @@ router.post('/seed', async (req, res)=> {
         req.body.cotutors = req.body.cotutors || [];
         req.body.cotutors.forEach(c=> c.id = uuid.v4());
 
-         // console.log("Seba Body:",req.body.project)
+        console.log("Seba Body:",req.body.project)
 
         const createCreator = new CreateContributor(req.body.creator);
         const createTutor = new CreateTutor(req.body.tutor);
@@ -74,12 +74,7 @@ router.post('/seed', async (req, res)=> {
         }
 
 
-            // const projectTx = await ledger.createProject(createProject);
-                // await projectTx.wait();
-
-        // unsignedTx= await ledger.populateTransaction.createProject( createProject);
-        // Returns an UnsignedTransaction which represents the transaction that would need to be signed and submitted to the network to execute METHOD_NAME with args and overrides.
-        console.log("createProject",createProject);
+        console.log("Seba createProject:",createProject)
         const projectTx = await ledger.createProject(createProject);
 
         console.log("Seba projectTx:",projectTx)
@@ -114,11 +109,11 @@ router.post('/seed', async (req, res)=> {
             }
 
         }, 0);
-        
+
     }
     catch(err) {
 
-         console.log("Seba err:",err)
+        console.log("Seba err:",err)
         res.status(500).send(err);
     }
 
