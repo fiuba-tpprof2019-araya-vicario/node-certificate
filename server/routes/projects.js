@@ -112,44 +112,46 @@ router.post('/seed', async (req, res)=> {
             console.log("sending blockchain tx...")
 
             try {
+
+                console.log("createCreator: ",createCreator)
                 const creatorTx = await ledger.createContributor(createCreator);
                 await creatorTx.wait();
-                console.log("createContributor Done")
-                const tutorTx = await ledger.createTutor(createTutor);
-                await tutorTx.wait();
-                console.log("createTutor Done")
+                console.log("createContributor Done",creatorTx.hash)
+                // const tutorTx = await ledger.createTutor(createTutor);
+                // await tutorTx.wait();
+                // console.log("createTutor Done")
 
-                for(let createStudent of createStudents){
-                    const studentTx = await ledger.createContributor(createStudent);
-                    await studentTx.wait();
-                }
-                console.log("createStudent Done")
-                for(let createCotutor of createCotutors){
-                    const tutorTx = await ledger.createTutor(createCotutor);
-                    await tutorTx.wait();
-                }
-                console.log("createCotutor Done")
-                console.log("sending final tx...")
-                // const tx = await ledger.signer.sendTransaction(projectTx);
-                const projectTx = await ledger.createProject(createProject);
-                await projectTx.wait();
+                // for(let createStudent of createStudents){
+                //     const studentTx = await ledger.createContributor(createStudent);
+                //     await studentTx.wait();
+                // }
+                // console.log("createStudent Done")
+                // for(let createCotutor of createCotutors){
+                //     const tutorTx = await ledger.createTutor(createCotutor);
+                //     await tutorTx.wait();
+                // }
+                // console.log("createCotutor Done")
+                // console.log("sending final tx...")
+                // // const tx = await ledger.signer.sendTransaction(projectTx);
+                // const projectTx = await ledger.createProject(createProject);
+                // await projectTx.wait();
 
-                console.log("tx final hash",projectTx.hash)
-
-
-                let rp_blockchain = {
-                    uri: ''+req.body.endpoint+'/v0/api/projects/'+originalProjectId+'/blockchain/',
-                    method: 'POST',
-                    json: true, // Automatically parses the JSON string in the response
-                    body: {
-                        "tx_id": projectTx.hash    
-                    }
-                }
-
-                let apiBlockchainResponse = await rp(rp_blockchain)
+                // console.log("tx final hash",projectTx.hash)
 
 
-                console.log("sent to brainsearch completed")
+                // let rp_blockchain = {
+                //     uri: ''+req.body.endpoint+'/v0/api/projects/'+originalProjectId+'/blockchain/',
+                //     method: 'POST',
+                //     json: true, // Automatically parses the JSON string in the response
+                //     body: {
+                //         "tx_id": projectTx.hash    
+                //     }
+                // }
+
+                // let apiBlockchainResponse = await rp(rp_blockchain)
+
+
+                // console.log("sent to brainsearch completed")
 
             }
             catch(err) {
