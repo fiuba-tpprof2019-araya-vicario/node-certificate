@@ -156,7 +156,7 @@ router.post('/seed', async (req, res)=> {
             }
             catch(err) {
 
-                console.log("Seba Error:",req.body.project)
+                console.log("Error Catch")
                 console.error(err);
             }
 

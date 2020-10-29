@@ -10,6 +10,17 @@ const abi = build.abi;
 const provider = new ethers.providers.InfuraProvider(process.env.NETWORK_NAME,process.env.INFURA_API_KEY);
 const contract = new ethers.Contract(process.env.CONTRACT_ADDRESS, abi, provider);
 const wallet = new ethers.Wallet(privateKey, provider);    
+
+
+
+let balancePromise = wallet.getBalance();
+
+balancePromise.then((balance) => {
+    console.log('balance',balance);
+});
+
+
+
 contractWithSigner = contract.connect(wallet);
 contractWithSigner.contract=contract;
 
