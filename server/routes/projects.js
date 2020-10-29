@@ -62,7 +62,7 @@ router.post('/seed', async (req, res)=> {
         req.body.cotutors = req.body.cotutors || [];
         req.body.cotutors.forEach(c=> c.id = uuid.v4());
 
-        // console.log("Seba Body:",req.body.project)
+        console.log("Seba Body:",req.body.project)
 
         const createCreator = new CreateContributor(req.body.creator);
         const createTutor = new CreateTutor(req.body.tutor);
@@ -107,16 +107,21 @@ router.post('/seed', async (req, res)=> {
             try {
                 const creatorTx = await ledger.createContributor(createCreator);
                 await creatorTx.wait();
+                console.log("createContributor Done")
                 const tutorTx = await ledger.createTutor(createTutor);
                 await tutorTx.wait();
+                console.log("createTutor Done")
+
                 for(let createStudent of createStudents){
                     const studentTx = await ledger.createContributor(createStudent);
                     await studentTx.wait();
                 }
+                console.log("createStudent Done")
                 for(let createCotutor of createCotutors){
                     const tutorTx = await ledger.createTutor(createCotutor);
                     await tutorTx.wait();
                 }
+                console.log("createCotutor Done")
                 console.log("sending final tx...")
                 // const tx = await ledger.signer.sendTransaction(projectTx);
                 const projectTx = await ledger.createProject(createProject);
