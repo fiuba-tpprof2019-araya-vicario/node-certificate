@@ -15,8 +15,8 @@ const uuid = require('uuid');
          this.name = data.name;
          this.surname = data.surname;
          this.email = data.email;
-         this.padron = data.padron;
-         this.careers = data.careers;
+         this.padron = data.padron || "1234";
+         this.careers = data.careers || ["Sin Carrera"];
      }
  }
 
