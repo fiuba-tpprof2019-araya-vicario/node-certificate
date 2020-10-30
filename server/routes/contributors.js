@@ -33,6 +33,8 @@ router.post('/', async (req, res)=> {
 
     try {
         const request = new CreateContributor(req.body);
+
+        console.log("posting contributor:",request)
         
         const tx = await ledger.createContributor(request);
 
