@@ -120,6 +120,7 @@ router.post('/seed', async (req, res)=> {
 
                 const overrides = {
                 gasPrice: 50000000000,
+                gasLimit: 10004402
                 // gasLimit:  39694
 
 
