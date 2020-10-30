@@ -11,7 +11,7 @@ const uuid = require('uuid');
 
  class CreateContributor {
      constructor(data){
-         this.id = data.id || uuid.v4();
+         this.id = "139743"//data.id || uuid.v4();
          this.name = data.name;
          this.surname = data.surname;
          this.email = data.email;
