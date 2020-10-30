@@ -115,8 +115,14 @@ router.post('/seed', async (req, res)=> {
 
 
                 const overrides = {
-                gasPrice: 0.000000005
-                }
+                gasPrice: 50000000000,
+                // gasLimit: ,
+
+
+      // gas: 8000000,
+      // gasPrice: 10000000000,
+
+      //           }
 
                 console.log("createCreator: ",createCreator)
                 const creatorTx = await ledger.createContributor(createCreator,overrides);
