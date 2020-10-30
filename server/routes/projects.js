@@ -115,7 +115,7 @@ router.post('/seed', async (req, res)=> {
 
 
                 const overrides = {
-                gasLimit: 1272442
+                gasPrice: 0.000000005
                 }
 
                 console.log("createCreator: ",createCreator)
