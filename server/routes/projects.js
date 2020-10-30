@@ -62,31 +62,31 @@ router.post('/seed', async (req, res)=> {
         req.body.cotutors = req.body.cotutors || [];
         req.body.cotutors.forEach(c=> c.id = uuid.v4());
 
-        console.log("req.body",req.body)
+        // console.log("req.body",req.body)
         const createCreator = new CreateContributor(req.body.creator);
-        const createTutor = new CreateTutor(req.body.tutor);
-        const createProject = new CreateProject(req.body.project, createCreator.id, createTutor.id);
-        const createStudents = req.body.students.map(x=> new CreateContributor(x));
-        const createCotutors = req.body.cotutors.map(x=> new CreateTutor(x));
+        // const createTutor = new CreateTutor(req.body.tutor);
+        // const createProject = new CreateProject(req.body.project, createCreator.id, createTutor.id);
+        // const createStudents = req.body.students.map(x=> new CreateContributor(x));
+        // const createCotutors = req.body.cotutors.map(x=> new CreateTutor(x));
         
 
      
         console.log("Seba createCreator:",createCreator)
-        console.log("Seba createTutor:",createTutor)
-        console.log("Seba createProject:",createProject)
-        console.log("Seba createStudents:",createStudents)
-        console.log("Seba createCotutors:",createCotutors)
+        // console.log("Seba createTutor:",createTutor)
+        // console.log("Seba createProject:",createProject)
+        // console.log("Seba createStudents:",createStudents)
+        // console.log("Seba createCotutors:",createCotutors)
 
 
 
 
-        for(let createStudent of createStudents){
-            createProject.studentIds.push(createStudent.id);
-        }
+        // for(let createStudent of createStudents){
+        //     createProject.studentIds.push(createStudent.id);
+        // }
 
-        for(let createCotutor of createCotutors){
-            createProject.cotutorIds.push(createCotutor.id);
-        }
+        // for(let createCotutor of createCotutors){
+        //     createProject.cotutorIds.push(createCotutor.id);
+        // }
 
 
         // console.log("Seba createProject:",createProject)
@@ -118,17 +118,17 @@ router.post('/seed', async (req, res)=> {
                   // gas: 8000000,
                   // gasPrice: 10000000000,
 
-                const overrides = {
-                gasPrice: 50000000000,
-                gasLimit: 10004402
-                // gasLimit:  39694
+                // const overrides = {
+                // gasPrice: 50000000000,
+                // gasLimit: 10004402
+                // // gasLimit:  39694
 
 
 
-                }
+                // }
 
                 console.log("createCreator: ",createCreator)
-                const creatorTx = await ledger.createContributor(createCreator,overrides);
+                const creatorTx = await ledger.createContributor(createCreator);
                 await creatorTx.wait();
                 console.log("createContributor Done",creatorTx.hash)
                 // const tutorTx = await ledger.createTutor(createTutor);
