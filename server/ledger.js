@@ -21,7 +21,7 @@ balancePromise.then((balance) => {
 
 
 
-// contractWithSigner = contract.connect(wallet);
-// contractWithSigner.contract=contract;
+contractWithSigner = contract.connect(wallet);
+contractWithSigner.contract=contract;
 
 module.exports = null;
