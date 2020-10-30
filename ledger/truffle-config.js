@@ -1,5 +1,9 @@
 const HDWalletProvider = require("truffle-hdwallet-provider");
 
+
+const CHELO_MNENOMIC="audit pig aspect vague bird journey such knife sauce seat bachelor advice"
+const CHELO_INFURA_API_KEY="3223453cb1bc41d3ab1eb1c452c09722"
+
 require('dotenv').config()  // Store environment-specific variable from '.env' to process.env
 
 module.exports = {
@@ -41,7 +45,7 @@ module.exports = {
       gasPrice: 10000000000
     },
     rinkeby: {
-      provider: () => new HDWalletProvider(process.env.MNENOMIC, "https://rinkeby.infura.io/v3/" + process.env.INFURA_API_KEY),
+      provider: () => new HDWalletProvider(CHELO_MNENOMIC, "https://rinkeby.infura.io/v3/" + CHELO_INFURA_API_KEY),
       network_id: 4,
       gas: 8000000,
       gasPrice: 10000000000
