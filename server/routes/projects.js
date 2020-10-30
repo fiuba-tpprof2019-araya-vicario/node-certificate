@@ -64,43 +64,38 @@ router.post('/seed', async (req, res)=> {
 
         // console.log("req.body",req.body)
         const createCreator = new CreateContributor(req.body.creator);
-        // const createTutor = new CreateTutor(req.body.tutor);
-        // const createProject = new CreateProject(req.body.project, createCreator.id, createTutor.id);
-        // const createStudents = req.body.students.map(x=> new CreateContributor(x));
-        // const createCotutors = req.body.cotutors.map(x=> new CreateTutor(x));
+        const createTutor = new CreateTutor(req.body.tutor);
+        const createProject = new CreateProject(req.body.project, createCreator.id, createTutor.id);
+        const createStudents = req.body.students.map(x=> new CreateContributor(x));
+        const createCotutors = req.body.cotutors.map(x=> new CreateTutor(x));
         
 
      
         console.log("Seba createCreator:",createCreator)
-        // console.log("Seba createTutor:",createTutor)
-        // console.log("Seba createProject:",createProject)
-        // console.log("Seba createStudents:",createStudents)
-        // console.log("Seba createCotutors:",createCotutors)
+        console.log("Seba createTutor:",createTutor)
+        console.log("Seba createProject:",createProject)
+        console.log("Seba createStudents:",createStudents)
+        console.log("Seba createCotutors:",createCotutors)
 
 
 
 
-        // for(let createStudent of createStudents){
-        //     createProject.studentIds.push(createStudent.id);
-        // }
+        for(let createStudent of createStudents){
+            createProject.studentIds.push(createStudent.id);
+        }
 
-        // for(let createCotutor of createCotutors){
-        //     createProject.cotutorIds.push(createCotutor.id);
-        // }
+        for(let createCotutor of createCotutors){
+            createProject.cotutorIds.push(createCotutor.id);
+        }
 
 
-        // console.log("Seba createProject:",createProject)
+        console.log("Seba createProjectPopulated:",createProject)
 
-        console.log("-------\nSeba ledger")
 
         // const projectTx = await ledger.contract.populateTransaction.createProject(createProject);
         // const projectTx = await ledger.createProject(createProject);
-
         // console.log("Seba projectTx:",projectTx)
         // console.log("Seba projectTx.hash:",projectTx.hash)
-
-
-
         // const projectTx2 = await ledger.populateTransaction.createProject(createProject);
 
 
@@ -109,7 +104,7 @@ router.post('/seed', async (req, res)=> {
         //async returns control 
         setTimeout(async () => {
 
-            console.log("sending blockchain tx...")
+            console.log("creating and sending blockchain txx...")
 
             try {
 
@@ -131,41 +126,42 @@ router.post('/seed', async (req, res)=> {
                 const creatorTx = await ledger.createContributor(createCreator);
                 await creatorTx.wait();
                 console.log("createContributor Done",creatorTx.hash)
-                // const tutorTx = await ledger.createTutor(createTutor);
-                // await tutorTx.wait();
-                // console.log("createTutor Done")
+                
+                const tutorTx = await ledger.createTutor(createTutor);
+                await tutorTx.wait();
+                console.log("createTutor Done")
 
-                // for(let createStudent of createStudents){
-                //     const studentTx = await ledger.createContributor(createStudent);
-                //     await studentTx.wait();
-                // }
-                // console.log("createStudent Done")
-                // for(let createCotutor of createCotutors){
-                //     const tutorTx = await ledger.createTutor(createCotutor);
-                //     await tutorTx.wait();
-                // }
-                // console.log("createCotutor Done")
-                // console.log("sending final tx...")
-                // // const tx = await ledger.signer.sendTransaction(projectTx);
-                // const projectTx = await ledger.createProject(createProject);
-                // await projectTx.wait();
+                for(let createStudent of createStudents){
+                    const studentTx = await ledger.createContributor(createStudent);
+                    await studentTx.wait();
+                }
+                console.log("createStudent Done")
+                for(let createCotutor of createCotutors){
+                    const tutorTx = await ledger.createTutor(createCotutor);
+                    await tutorTx.wait();
+                }
+                console.log("createCotutor Done")
+                console.log("sending final tx...")
+                // const tx = await ledger.signer.sendTransaction(projectTx);
+                const projectTx = await ledger.createProject(createProject);
+                await projectTx.wait();
 
-                // console.log("tx final hash",projectTx.hash)
-
-
-                // let rp_blockchain = {
-                //     uri: ''+req.body.endpoint+'/v0/api/projects/'+originalProjectId+'/blockchain/',
-                //     method: 'POST',
-                //     json: true, // Automatically parses the JSON string in the response
-                //     body: {
-                //         "tx_id": projectTx.hash    
-                //     }
-                // }
-
-                // let apiBlockchainResponse = await rp(rp_blockchain)
+                console.log("tx final hash",projectTx.hash)
 
 
-                // console.log("sent to brainsearch completed")
+                let rp_blockchain = {
+                    uri: ''+req.body.endpoint+'/v0/api/projects/'+originalProjectId+'/blockchain/',
+                    method: 'POST',
+                    json: true, // Automatically parses the JSON string in the response
+                    body: {
+                        "tx_id": projectTx.hash    
+                    }
+                }
+
+                let apiBlockchainResponse = await rp(rp_blockchain)
+
+
+                console.log("sent to brainsearch completed")
 
             }
             catch(err) {
